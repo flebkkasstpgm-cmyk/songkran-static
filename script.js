@@ -5,11 +5,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const openBtn = document.getElementById('open-bless-modal');
     const closeBtn = document.querySelector('.close-btn');
     const form = document.getElementById('bless-form');
+    const galleryContent = document.getElementById('gallery-content');
+
+    // --- Mode Selection Logic ---
+    const modeBtns = document.querySelectorAll('.mode-btn');
+    const itemFields = document.getElementById('item-fields');
+    const photoFields = document.getElementById('photo-fields');
+    let currentMode = 'item';
+
+    modeBtns.forEach(btn => {
+        btn.onclick = () => {
+            modeBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentMode = btn.dataset.mode;
+            
+            if (currentMode === 'item') {
+                itemFields.style.display = 'block';
+                photoFields.style.display = 'none';
+            } else {
+                itemFields.style.display = 'none';
+                photoFields.style.display = 'block';
+            }
+        };
+    });
 
     // --- Google Sheets API URL ---
-    const API_URL = 'https://script.google.com/macros/s/AKfycbxVtdJocmYMK_Tw5q0IVXOMf7ZS02qiEn3E4AZDI5GpC-RJdLMppu6SheLch_nrJoQX/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbxQajKIlHfL2FETjnXhTP761GzYhGtFj3h5LmtfuDwpFo45BcLIVfmRulVWCKRDXdh7/exec';
     
     let displayedIds = new Set();
+    let allPhotoBlessings = []; // สำหรับ Gallery Loop (เฉพาะคนที่มีรูป/โหมด Photo)
+    let currentGalleryIndex = 0;
 
     // 1. ฟังก์ชันจัดการก้อนเมฆ (Animation)
     function createClouds() {
@@ -35,15 +60,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. ระบบ Modal
     if (openBtn) openBtn.onclick = () => modal.style.display = 'block';
-    if (closeBtn) closeBtn.onclick = () => modal.style.display = 'none';
-    window.onclick = (e) => { if (e.target == modal) modal.style.display = 'none'; };
+    if (closeBtn) closeBtn.onclick = () => { modal.style.display = 'none'; form.reset(); };
+    window.onclick = (e) => { if (e.target == modal) { modal.style.display = 'none'; form.reset(); } };
 
-    // 3. ฟังก์ชันสร้างวัตถุอวยพร (ใช้รูปภาพจริง)
-    function createItem(name, bless, type, isLoop = true) {
+    // 3. ฟังก์ชันสร้างวัตถุอวยพร (ลอยในจอหลัก - สำหรับโหมด Item)
+    function createFloatingItem(name, bless, type, isLoop = true) {
         const item = document.createElement('div');
         item.className = `item-object ${type}`;
-        
-        // ใช้รูปภาพตามประเภทที่เลือก
         const imgSrc = `${type}.png`;
         
         item.innerHTML = `
@@ -62,36 +85,25 @@ document.addEventListener('DOMContentLoaded', () => {
             for (let i = 0; i < dropCount; i++) {
                 const drop = document.createElement('div');
                 drop.className = 'water-stream';
-                
-                if (type === 'perfume') {
-                    drop.style.background = 'rgba(255, 241, 118, 0.8)';
-                }
+                if (type === 'perfume') drop.style.background = 'rgba(255, 241, 118, 0.8)';
 
                 const size = 6 + Math.random() * 10;
-                drop.style.width = `${size}px`; 
-                drop.style.height = `${size}px`;
+                drop.style.width = `${size}px`; drop.style.height = `${size}px`;
                 
                 let dx, dy, startX, startY;
-                
                 if (type === 'gun') {
                     startX = 110; startY = 40;
-                    dx = 150 + Math.random() * 150;
-                    dy = (Math.random() - 0.5) * 100;
+                    dx = 150 + Math.random() * 150; dy = (Math.random() - 0.5) * 100;
                 } else if (type === 'perfume') {
                     startX = 75; startY = 20;
-                    dx = (Math.random() - 0.5) * 150;
-                    dy = 150 + Math.random() * 100;
+                    dx = (Math.random() - 0.5) * 150; dy = 150 + Math.random() * 100;
                 } else {
-                    // ขันเงิน/ทอง
                     startX = 75; startY = 60;
-                    dx = 80 + Math.random() * 120;
-                    dy = 200 + Math.random() * 150;
+                    dx = 80 + Math.random() * 120; dy = 200 + Math.random() * 150;
                 }
 
-                drop.style.setProperty('--dx', `${dx}px`); 
-                drop.style.setProperty('--dy', `${dy}px`);
-                drop.style.left = `${startX}px`; 
-                drop.style.top = `${startY}px`;
+                drop.style.setProperty('--dx', `${dx}px`); drop.style.setProperty('--dy', `${dy}px`);
+                drop.style.left = `${startX}px`; drop.style.top = `${startY}px`;
                 drop.style.animation = 'water-flow 0.8s ease-out forwards';
                 item.appendChild(drop);
                 setTimeout(() => drop.remove(), 800);
@@ -99,63 +111,119 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const waterInterval = setInterval(createWater, type === 'gun' ? 150 : (type === 'perfume' ? 600 : 350));
 
-        // อนิเมชั่นลอย
         function startFloating() {
             const randomTop = 45 + Math.random() * 35;
             item.style.top = `${randomTop}%`;
             const duration = 20 + Math.random() * 15;
-            
             const animation = item.animate([
                 { left: '-300px', transform: 'rotate(0deg)' },
                 { left: '50vw', transform: 'rotate(15deg)' },
                 { left: '110vw', transform: 'rotate(0deg)' }
-            ], { 
-                duration: duration * 1000, 
-                easing: 'linear' 
-            });
+            ], { duration: duration * 1000, easing: 'linear' });
 
             animation.onfinish = () => {
                 if (isLoop) startFloating();
                 else { clearInterval(waterInterval); item.remove(); }
             };
         }
-        
         startFloating();
     }
 
-    // 4. ระบบ Sync ข้อมูล
+    // 4. ระบบ Gallery Looper (สำหรับโหมด Photo)
+    function updateGallery() {
+        if (allPhotoBlessings.length === 0) return;
+
+        const data = allPhotoBlessings[currentGalleryIndex];
+        const newItem = document.createElement('div');
+        newItem.className = 'gallery-item';
+        
+        const photoSrc = data.photo && data.photo !== "" ? data.photo : 'logo.png';
+        
+        newItem.innerHTML = `
+            <img src="${photoSrc}" class="staff-photo" alt="${data.name}">
+            <div class="staff-msg">
+                <span class="staff-name">คุณ ${data.name}</span>
+                <p class="staff-text">" ${data.bless} "</p>
+            </div>
+        `;
+
+        const oldItem = galleryContent.querySelector('.gallery-item');
+        if (oldItem) {
+            oldItem.classList.remove('active');
+            oldItem.classList.add('exit');
+            setTimeout(() => oldItem.remove(), 800);
+        }
+
+        galleryContent.appendChild(newItem);
+        setTimeout(() => newItem.classList.add('active'), 50);
+
+        currentGalleryIndex = (currentGalleryIndex + 1) % allPhotoBlessings.length;
+    }
+
+    // 5. ระบบ Sync ข้อมูล (ดึงข้อมูลมาแสดงแยกตามโหมด)
     async function syncBlessings() {
         try {
             const response = await fetch(API_URL);
             const data = await response.json();
             
-            data.forEach(item => {
+            // แยกข้อมูล
+            const photoData = data.filter(d => d.mode === 'photo');
+            const itemData = data.filter(d => d.mode === 'item' || !d.mode); // รองรับของเก่าที่ไม่มีโหมด
+
+            allPhotoBlessings = photoData;
+
+            // สร้างขันน้ำลอยในจอหลัก (เฉพาะโหมด Item)
+            itemData.forEach(item => {
                 const id = `${item.name}-${item.time}`;
                 if (!displayedIds.has(id)) {
-                    createItem(item.name, item.bless, item.type);
+                    createFloatingItem(item.name, item.bless, item.type || 'silver');
                     displayedIds.add(id);
                 }
             });
+
+            // เริ่ม Gallery ถ้ายังไม่มี
+            if (photoData.length > 0 && galleryContent.querySelector('.empty')) {
+                galleryContent.innerHTML = '';
+                updateGallery();
+            }
         } catch (e) {
             console.error('API Sync Error:', e);
         }
     }
 
-    // 5. ส่งคำอวยพรใหม่
+    // 6. แปลงรูปเป็น Base64
+    function getBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+
+    // 7. ส่งข้อมูลใหม่
     form.onsubmit = async (e) => {
         e.preventDefault();
         const submitBtn = form.querySelector('.btn-submit');
         const originalText = submitBtn.innerText;
         
-        const payload = {
-            name: document.getElementById('username').value,
-            bless: document.getElementById('blessing').value,
-            type: document.querySelector('input[name="i-type"]:checked').value
-        };
-
         try {
             submitBtn.innerText = 'กำลังส่งพร... 💦';
             submitBtn.disabled = true;
+
+            let photoBase64 = "";
+            if (currentMode === 'photo') {
+                const photoFile = document.getElementById('user-photo').files[0];
+                if (photoFile) photoBase64 = await getBase64(photoFile);
+            }
+
+            const payload = {
+                mode: currentMode,
+                name: document.getElementById('username').value,
+                bless: document.getElementById('blessing').value,
+                type: currentMode === 'item' ? document.querySelector('input[name="i-type"]:checked').value : 'photo',
+                photo: photoBase64
+            };
 
             await fetch(API_URL, {
                 method: 'POST',
@@ -179,5 +247,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // เริ่มทำงาน
     createClouds();
     syncBlessings();
-    setInterval(syncBlessings, 5000);
+    setInterval(syncBlessings, 10000); // Sync ข้อมูลทุก 10 วิ
+    setInterval(updateGallery, 6000);   // สลับรูปใน Gallery ทุก 6 วิ
 });

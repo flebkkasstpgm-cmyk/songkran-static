@@ -17,6 +17,15 @@
         </div>
     </div>
 
+    <!-- Live Staff Gallery (Floating Left) -->
+    <div class="staff-gallery" id="staff-gallery">
+        <div class="gallery-title">💦 สมาชิกสาดสุข 💦</div>
+        <div id="gallery-content">
+            <!-- รูปพนักงานจะสลับตรงนี้ -->
+            <div class="gallery-item empty">รอเพื่อนๆ อัพโหลดรูป...</div>
+        </div>
+    </div>
+
     <!-- ท้องฟ้าและก้อนเมฆ -->
     <div class="sky-container">
         <div class="sun"></div>
@@ -55,35 +64,55 @@
             <span class="close-btn">&times;</span>
             <h2>🙏 ส่งคำอวยพรสงกรานต์</h2>
             <form id="bless-form">
+                <div class="mode-selector">
+                    <button type="button" class="mode-btn active" data-mode="item">💦 สาดน้ำนำโชค</button>
+                    <button type="button" class="mode-btn" data-mode="photo">📸 อัพรูปอวยพร</button>
+                </div>
+
                 <div class="form-group">
                     <label for="username">ชื่อของคุณ:</label>
                     <input type="text" id="username" placeholder="ระบุชื่อ" required>
                 </div>
+                
                 <div class="form-group">
                     <label for="blessing">คำอวยพร:</label>
                     <textarea id="blessing" rows="3" placeholder="อวยพรเพื่อนร่วมงานหรือเจ้านาย..." required></textarea>
                 </div>
-                <div class="form-group">
-                    <label>เลือกขันนำโชค:</label>
-                    <div class="item-options">
-                        <label class="option">
-                            <input type="radio" name="i-type" value="silver" checked>
-                            <span class="i-preview">⚪ ขันเงิน</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="i-type" value="gold">
-                            <span class="i-preview">🟡 ขันทอง</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="i-type" value="gun">
-                            <span class="i-preview">🔫 ปืนฉีดน้ำ</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="i-type" value="perfume">
-                            <span class="i-preview">🌸 น้ำอบไทย</span>
-                        </label>
+
+                <!-- ส่วนของโหมดสาดน้ำ -->
+                <div id="item-fields" class="mode-fields">
+                    <div class="form-group">
+                        <label>เลือกขันนำโชค:</label>
+                        <div class="item-options">
+                            <label class="option">
+                                <input type="radio" name="i-type" value="silver" checked>
+                                <span class="i-preview">⚪ ขันเงิน</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="i-type" value="gold">
+                                <span class="i-preview">🟡 ขันทอง</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="i-type" value="gun">
+                                <span class="i-preview">🔫 ปืนฉีดน้ำ</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="i-type" value="perfume">
+                                <span class="i-preview">🌸 น้ำอบไทย</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
+
+                <!-- ส่วนของโหมดอัพรูป -->
+                <div id="photo-fields" class="mode-fields" style="display: none;">
+                    <div class="form-group">
+                        <label for="user-photo">📸 เลือกรูปภาพของคุณ:</label>
+                        <input type="file" id="user-photo" accept="image/*">
+                        <small style="color: #666;">* รูปจะแสดงสลับในตู้กระจกทางซ้าย</small>
+                    </div>
+                </div>
+
                 <button type="submit" class="btn-submit">สาดความสุข! 💦</button>
             </form>
         </div>
