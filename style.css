@@ -59,6 +59,11 @@ body {
     padding-top: 50px; 
     pointer-events: none; 
 }
+
+@media screen and (max-width: 768px) {
+    .qr-container { display: none; }
+    h1 { font-size: 2.2rem; }
+}
 h1 { 
     font-size: 3.5rem; 
     color: var(--primary-orange); 
@@ -168,6 +173,107 @@ h1 {
 }
 .gold .bowl-classic { 
     background: radial-gradient(circle at 30% 30%, #fff700 0%, #fb8500 50%, #8d6e63 100%); 
+}
+
+/* ปืนฉีดน้ำไฮเทค Premium Water Gun */
+.gun .bowl-classic { 
+    display: none; /* ซ่อนถ้วยขันเดิม */
+}
+.gun-classic { 
+    position: relative; 
+    width: 130px; 
+    height: 50px; 
+    margin-top: 10px; 
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+}
+.gun-body { 
+    width: 100%; 
+    height: 100%; 
+    border-radius: 10px 30px 10px 10px; 
+    background: linear-gradient(to bottom, #ef233c 0%, #d90429 100%); 
+    border-bottom: 6px solid #8d0801; 
+    position: relative;
+    z-index: 2;
+}
+.gun-tank { 
+    position: absolute; 
+    top: -25px; 
+    left: 20px; 
+    width: 90px; 
+    height: 40px; 
+    background: linear-gradient(to bottom, #ffb703 0%, #fb8500 100%); 
+    border-radius: 20px; 
+    border: 3px solid rgba(255,255,255,0.4);
+    z-index: 1;
+}
+.gun-handle {
+    position: absolute;
+    bottom: -20px;
+    left: 10px;
+    width: 30px;
+    height: 40px;
+    background: #2b2d42;
+    border-radius: 5px;
+    transform: skewX(-15deg);
+}
+.gun-nozzle {
+    position: absolute;
+    right: -10px;
+    top: 10px;
+    width: 20px;
+    height: 15px;
+    background: #8d99ae;
+    border-radius: 3px;
+}
+
+/* น้ำอบไทย (Nam Op Bottle) */
+.perfume .bowl-classic { display: none; }
+.perfume-bottle {
+    position: relative;
+    width: 60px;
+    height: 120px;
+    background: rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(2px);
+    border-radius: 10px 10px 20px 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+.perfume-liquid {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70%;
+    background: linear-gradient(to top, #ffea00 0%, #fff176 100%);
+    opacity: 0.6;
+}
+.perfume-cap {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 20px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+.perfume-label {
+    position: absolute;
+    top: 40%;
+    left: 10%;
+    width: 80%;
+    height: 30px;
+    background: #fff;
+    border: 1px solid #fb8500;
+    font-size: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fb8500;
+    font-weight: bold;
+    border-radius: 5px;
 }
 
 /* ละอองน้ำ Water Streams */

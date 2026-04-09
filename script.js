@@ -34,51 +34,116 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 2. ระบบ Modal
-    openBtn.onclick = () => modal.style.display = 'block';
-    closeBtn.onclick = () => modal.style.display = 'none';
+    if (openBtn) openBtn.onclick = () => modal.style.display = 'block';
+    if (closeBtn) closeBtn.onclick = () => modal.style.display = 'none';
     window.onclick = (e) => { if (e.target == modal) modal.style.display = 'none'; };
 
-    // 3. ฟังก์ชันสร้างขันลายไทยและอนิเมชั่นลอย
+    // 3. ฟังก์ชันสร้างขันลายไทยหรือปืนฉีดน้ำ และอนิเมชั่นลอย
     function createItem(name, bless, type, isLoop = true) {
         const item = document.createElement('div');
         item.className = `item-object ${type}`;
-        item.innerHTML = `
+        
+        let objectHTML = `
             <div class="b-info"><b>${name}:</b> ${bless}</div>
             <div class="bowl-classic"><div class="thai-pattern"></div></div>
         `;
+
+        if (type === 'gun') {
+            objectHTML = `
+                <div class="b-info"><b>${name}:</b> ${bless}</div>
+                <div class="gun-classic">
+                    <div class="gun-tank"></div>
+                    <div class="gun-body"></div>
+                    <div class="gun-handle"></div>
+                    <div class="gun-nozzle"></div>
+                </div>
+            `;
+        } else if (type === 'perfume') {
+            objectHTML = `
+                <div class="b-info"><b>${name}:</b> ${bless}</div>
+                <div class="perfume-bottle">
+                    <div class="perfume-liquid"></div>
+                    <div class="perfume-cap"></div>
+                    <div class="perfume-label">น้ำอบไทย</div>
+                </div>
+            `;
+        }
+
+        item.innerHTML = objectHTML;
         stage.appendChild(item);
 
+        // เอฟเฟกต์สาดน้ำ
         function createWater() {
-            for (let i = 0; i < 3; i++) {
+            let dropCount = 3;
+            if (type === 'gun') dropCount = 2;
+            if (type === 'perfume') dropCount = 1; // น้ำอบประพรมทีละน้อย
+
+            for (let i = 0; i < dropCount; i++) {
                 const drop = document.createElement('div');
                 drop.className = 'water-stream';
+                
+                // ถ้าน้ำอบไทย ให้เป็นสีเหลืองอ่อน
+                if (type === 'perfume') {
+                    drop.style.background = 'rgba(255, 241, 118, 0.8)';
+                }
+
                 const size = 6 + Math.random() * 10;
-                drop.style.width = `${size}px`; drop.style.height = `${size}px`;
-                let dx = 80 + Math.random() * 120; let dy = 200 + Math.random() * 150;
-                drop.style.setProperty('--dx', `${dx}px`); drop.style.setProperty('--dy', `${dy}px`);
-                drop.style.left = `80px`; drop.style.top = `60px`;
+                drop.style.width = `${size}px`; 
+                drop.style.height = `${size}px`;
+                
+                let dx, dy, startX, startY;
+                
+                if (type === 'gun') {
+                    startX = 120; startY = 25;
+                    dx = 150 + Math.random() * 150;
+                    dy = (Math.random() - 0.5) * 100;
+                } else if (type === 'perfume') {
+                    // ประพรมจากปากขวด
+                    startX = 30; startY = 0;
+                    dx = (Math.random() - 0.5) * 150;
+                    dy = 150 + Math.random() * 100;
+                } else {
+                    startX = 80; startY = 60;
+                    dx = 80 + Math.random() * 120;
+                    dy = 200 + Math.random() * 150;
+                }
+
+                drop.style.setProperty('--dx', `${dx}px`); 
+                drop.style.setProperty('--dy', `${dy}px`);
+                drop.style.left = `${startX}px`; 
+                drop.style.top = `${startY}px`;
                 drop.style.animation = 'water-flow 0.8s ease-out forwards';
                 item.appendChild(drop);
                 setTimeout(() => drop.remove(), 800);
             }
         }
-        const waterInterval = setInterval(createWater, 350);
+        const waterInterval = setInterval(createWater, type === 'gun' ? 150 : (type === 'perfume' ? 600 : 350));
 
+        // ฟังก์ชันเริ่มลอย
         function startFloating() {
             const randomTop = 45 + Math.random() * 35;
             item.style.top = `${randomTop}%`;
             const duration = 20 + Math.random() * 15;
+            
             const animation = item.animate([
                 { left: '-300px', transform: 'rotate(0deg)' },
                 { left: '50vw', transform: 'rotate(20deg)' },
                 { left: '110vw', transform: 'rotate(0deg)' }
-            ], { duration: duration * 1000, easing: 'linear' });
+            ], { 
+                duration: duration * 1000, 
+                easing: 'linear' 
+            });
 
             animation.onfinish = () => {
-                if (isLoop) startFloating();
-                else { clearInterval(waterInterval); item.remove(); }
+                if (isLoop) {
+                    startFloating();
+                } else {
+                    clearInterval(waterInterval);
+                    item.remove();
+                }
             };
         }
+        
         startFloating();
     }
 
@@ -88,7 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch(API_URL);
             const data = await response.json();
             
-            // วนลูปแสดงข้อมูลใหม่ที่ยังไม่เคยแสดง
             data.forEach(item => {
                 const id = `${item.name}-${item.time}`;
                 if (!displayedIds.has(id)) {
@@ -97,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         } catch (e) {
-            console.error('ไม่สามารถดึงข้อมูลจาก Google Sheets ได้:', e);
+            console.error('API Sync Error:', e);
         }
     }
 
@@ -117,22 +181,19 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.innerText = 'กำลังส่งพร... 💦';
             submitBtn.disabled = true;
 
-            // ส่งข้อมูลไปยัง Google Apps Script (POST)
             await fetch(API_URL, {
                 method: 'POST',
-                mode: 'no-cors', // GAS ต้องการโหมดนี้สำหรับ Simple POST
+                mode: 'no-cors', 
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
 
-            // สร้างเอฟเฟกต์ลอยทันที (เพื่อ UX ที่ดี)
-            createItem(payload.name, payload.bless, payload.type);
-            displayedIds.add(`${payload.name}-${Date.now()}`);
-
             form.reset();
             modal.style.display = 'none';
+            setTimeout(syncBlessings, 1500); 
+
         } catch (e) {
-            alert('ขออภัยครับ ระบบส่งพรขัดข้อง ลองใหม่อีกครั้งนะครับ');
+            alert('ระบบส่งพรขัดข้อง ลองใหม่อีกครั้งนะครับ');
         } finally {
             submitBtn.innerText = originalText;
             submitBtn.disabled = false;
@@ -142,7 +203,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // เริ่มทำงาน
     createClouds();
     syncBlessings();
-    
-    // ตรวจสอบคำอวยพรใหม่ทุก 5 วินาที
     setInterval(syncBlessings, 5000);
 });
