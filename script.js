@@ -38,51 +38,31 @@ document.addEventListener('DOMContentLoaded', () => {
     if (closeBtn) closeBtn.onclick = () => modal.style.display = 'none';
     window.onclick = (e) => { if (e.target == modal) modal.style.display = 'none'; };
 
-    // 3. ฟังก์ชันสร้างขันลายไทยหรือปืนฉีดน้ำ และอนิเมชั่นลอย
+    // 3. ฟังก์ชันสร้างวัตถุอวยพร (ใช้รูปภาพจริง)
     function createItem(name, bless, type, isLoop = true) {
         const item = document.createElement('div');
         item.className = `item-object ${type}`;
         
-        let objectHTML = `
+        // ใช้รูปภาพตามประเภทที่เลือก
+        const imgSrc = `${type}.png`;
+        
+        item.innerHTML = `
             <div class="b-info"><b>${name}:</b> ${bless}</div>
-            <div class="bowl-classic"><div class="thai-pattern"></div></div>
+            <img src="${imgSrc}" class="item-img" alt="${type}">
         `;
 
-        if (type === 'gun') {
-            objectHTML = `
-                <div class="b-info"><b>${name}:</b> ${bless}</div>
-                <div class="gun-classic">
-                    <div class="gun-tank"></div>
-                    <div class="gun-body"></div>
-                    <div class="gun-handle"></div>
-                    <div class="gun-nozzle"></div>
-                </div>
-            `;
-        } else if (type === 'perfume') {
-            objectHTML = `
-                <div class="b-info"><b>${name}:</b> ${bless}</div>
-                <div class="perfume-bottle">
-                    <div class="perfume-liquid"></div>
-                    <div class="perfume-cap"></div>
-                    <div class="perfume-label">น้ำอบไทย</div>
-                </div>
-            `;
-        }
-
-        item.innerHTML = objectHTML;
         stage.appendChild(item);
 
         // เอฟเฟกต์สาดน้ำ
         function createWater() {
             let dropCount = 3;
             if (type === 'gun') dropCount = 2;
-            if (type === 'perfume') dropCount = 1; // น้ำอบประพรมทีละน้อย
+            if (type === 'perfume') dropCount = 1;
 
             for (let i = 0; i < dropCount; i++) {
                 const drop = document.createElement('div');
                 drop.className = 'water-stream';
                 
-                // ถ้าน้ำอบไทย ให้เป็นสีเหลืองอ่อน
                 if (type === 'perfume') {
                     drop.style.background = 'rgba(255, 241, 118, 0.8)';
                 }
@@ -94,16 +74,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 let dx, dy, startX, startY;
                 
                 if (type === 'gun') {
-                    startX = 120; startY = 25;
+                    startX = 110; startY = 40;
                     dx = 150 + Math.random() * 150;
                     dy = (Math.random() - 0.5) * 100;
                 } else if (type === 'perfume') {
-                    // ประพรมจากปากขวด
-                    startX = 30; startY = 0;
+                    startX = 75; startY = 20;
                     dx = (Math.random() - 0.5) * 150;
                     dy = 150 + Math.random() * 100;
                 } else {
-                    startX = 80; startY = 60;
+                    // ขันเงิน/ทอง
+                    startX = 75; startY = 60;
                     dx = 80 + Math.random() * 120;
                     dy = 200 + Math.random() * 150;
                 }
@@ -119,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const waterInterval = setInterval(createWater, type === 'gun' ? 150 : (type === 'perfume' ? 600 : 350));
 
-        // ฟังก์ชันเริ่มลอย
+        // อนิเมชั่นลอย
         function startFloating() {
             const randomTop = 45 + Math.random() * 35;
             item.style.top = `${randomTop}%`;
@@ -127,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const animation = item.animate([
                 { left: '-300px', transform: 'rotate(0deg)' },
-                { left: '50vw', transform: 'rotate(20deg)' },
+                { left: '50vw', transform: 'rotate(15deg)' },
                 { left: '110vw', transform: 'rotate(0deg)' }
             ], { 
                 duration: duration * 1000, 
@@ -135,19 +115,15 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             animation.onfinish = () => {
-                if (isLoop) {
-                    startFloating();
-                } else {
-                    clearInterval(waterInterval);
-                    item.remove();
-                }
+                if (isLoop) startFloating();
+                else { clearInterval(waterInterval); item.remove(); }
             };
         }
         
         startFloating();
     }
 
-    // 4. ระบบ Sync ข้อมูลด้วย Google Sheets API
+    // 4. ระบบ Sync ข้อมูล
     async function syncBlessings() {
         try {
             const response = await fetch(API_URL);
@@ -165,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 5. ส่งคำอวยพรใหม่ไปยัง Google Sheets
+    // 5. ส่งคำอวยพรใหม่
     form.onsubmit = async (e) => {
         e.preventDefault();
         const submitBtn = form.querySelector('.btn-submit');
