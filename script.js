@@ -81,6 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let dropCount = 3;
             if (type === 'gun') dropCount = 2;
             if (type === 'perfume') dropCount = 1;
+            if (type === 'car' || type === 'motorcycle') dropCount = 5; // รถสาดน้ำเยอะขึ้น
 
             for (let i = 0; i < dropCount; i++) {
                 const drop = document.createElement('div');
@@ -97,6 +98,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else if (type === 'perfume') {
                     startX = 75; startY = 20;
                     dx = (Math.random() - 0.5) * 150; dy = 150 + Math.random() * 100;
+                } else if (type === 'car' || type === 'motorcycle') {
+                    startX = 75; startY = 80; // สาดน้ำจากพื้นรถ
+                    dx = (Math.random() - 0.5) * 200; dy = 50 + Math.random() * 100;
                 } else {
                     startX = 75; startY = 60;
                     dx = 80 + Math.random() * 120; dy = 200 + Math.random() * 150;
@@ -115,10 +119,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const randomTop = 45 + Math.random() * 35;
             item.style.top = `${randomTop}%`;
             const duration = 20 + Math.random() * 15;
+            
+            // ปรับแต่งการเคลื่อนที่: รถไม่ต้องหมุน (rotate)
+            const rotation = (type === 'car' || type === 'motorcycle') ? '0deg' : '15deg';
+            
             const animation = item.animate([
-                { left: '-300px', transform: 'rotate(0deg)' },
-                { left: '50vw', transform: 'rotate(15deg)' },
-                { left: '110vw', transform: 'rotate(0deg)' }
+                { left: '-300px', transform: `rotate(0deg)` },
+                { left: '50vw', transform: `rotate(${rotation})` },
+                { left: '110vw', transform: `rotate(0deg)` }
             ], { duration: duration * 1000, easing: 'linear' });
 
             animation.onfinish = () => {
