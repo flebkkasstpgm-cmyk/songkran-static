@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สงกรานต์อวยพรออนไลน์ 2569 | Songkran Online Static</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- ท้องฟ้าและก้อนเมฆ -->
+    <div class="sky-container">
+        <div class="sun"></div>
+        <div class="clouds" id="clouds"></div>
+    </div>
+
+    <!-- พื้นที่หลักที่ขันน้ำจะลอย -->
+    <div class="main-stage">
+        <div class="water-container" id="water-stage">
+            <!-- ขันน้ำและคำอวยพรจะถูกสร้างขึ้นด้วย JS -->
+        </div>
+    </div>
+
+    <!-- เลเยอร์ UI -->
+    <div class="ui-layer">
+        <h1>💦 สงกรานต์ออนไลน์ 💦</h1>
+        <p class="subtitle">ส่งความสุขสไตล์ Office Edition 2569</p>
+
+        <div class="controls">
+            <button id="open-bless-modal" class="btn-primary">✨ ส่งคำอวยพร ✨</button>
+        </div>
+    </div>
+
+    <!-- Modal ส่งคำอวยพร -->
+    <div id="bless-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>🙏 ส่งคำอวยพรสงกรานต์</h2>
+            <form id="bless-form">
+                <div class="form-group">
+                    <label for="username">ชื่อของคุณ:</label>
+                    <input type="text" id="username" placeholder="ระบุชื่อ" required>
+                </div>
+                <div class="form-group">
+                    <label for="blessing">คำอวยพร:</label>
+                    <textarea id="blessing" rows="3" placeholder="อวยพรเพื่อนร่วมงานหรือเจ้านาย..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>เลือกขันนำโชค:</label>
+                    <div class="item-options">
+                        <label class="option">
+                            <input type="radio" name="i-type" value="silver" checked>
+                            <span class="i-preview">⚪ ขันเงินลายไทย</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="i-type" value="gold">
+                            <span class="i-preview">🟡 ขันทองลายไทย</span>
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit">สาดความสุข! 💦</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
