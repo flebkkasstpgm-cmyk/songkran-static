@@ -47,8 +47,11 @@
 
     <!-- พื้นที่หลักที่ขันน้ำจะลอย -->
     <div class="main-stage">
-        <div class="water-container" id="water-stage">
-            <!-- ขันน้ำและคำอวยพรจะถูกสร้างขึ้นด้วย JS -->
+        <div id="seamsi-stage" class="seamsi-stage">
+            <!-- เลนบน: เซียมซีลอยฟ้า -->
+        </div>
+        <div id="water-stage" class="water-container">
+            <!-- เลนล่าง: ขันน้ำและคำอวยพร -->
         </div>
     </div>
 
@@ -59,6 +62,42 @@
 
         <div class="controls">
             <button id="open-bless-modal" class="btn-primary">✨ ส่งคำอวยพร ✨</button>
+            <button id="open-seamsi-modal" class="btn-primary" style="background: linear-gradient(135deg, #d00000 0%, #ff4d4d 100%); margin-left: 10px;">🔮 เสี่ยงเซียมซี 🔮</button>
+        </div>
+    </div>
+
+    <!-- Modal เสี่ยงเซียมซี -->
+    <div id="seamsi-modal" class="modal">
+        <div class="modal-content" style="max-width: 450px; text-align: center; background: #fff5f5;">
+            <span class="close-btn" id="close-seamsi">&times;</span>
+            <h2 style="color: #d00000; margin-bottom: 20px;">🔮 เสี่ยงเซียมซีนำโชค 🔮</h2>
+            <div id="seamsi-setup">
+                <input type="text" id="seamsi-username" placeholder="ใส่ชื่อของคุณก่อนเสี่ยงทาย" style="margin-bottom: 20px;">
+                <button id="start-shake" class="btn-submit" style="background: #d00000; box-shadow: 0 8px 0 #780000;">เริ่มเขย่าเซียมซี!</button>
+            </div>
+            <div id="seamsi-animation" style="display: none; padding: 40px 0;">
+                <div class="seamsi-cup" id="seamsi-cup">
+                    <div class="stick"></div><div class="stick"></div><div class="stick"></div><div class="stick"></div><div class="stick"></div>
+                </div>
+                <p style="margin-top: 20px; font-weight: bold; color: #666;">กำลังขอพรจากสิ่งศักดิ์สิทธิ์...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- กล่องแสดงผลเซียมซี (กลางจอ) -->
+    <div id="seamsi-result-overlay" class="seamsi-result-overlay">
+        <div class="result-card">
+            <div class="result-header">ใบเซียมซีที่ <span id="res-num">0</span></div>
+            <div class="result-name">คุณ <span id="res-name">...</span></div>
+            <hr>
+            <div class="result-body">
+                <p id="res-line1">...</p>
+                <p id="res-line2">...</p>
+                <p id="res-line3">...</p>
+                <p id="res-line4">...</p>
+            </div>
+            <div class="result-footer">คำทำนายจะหายไปใน <span id="res-timer">30</span> วินาที</div>
+            <button class="btn-close-result" onclick="document.getElementById('seamsi-result-overlay').classList.remove('active')">ปิดหน้าต่าง</button>
         </div>
     </div>
 
@@ -68,6 +107,14 @@
             <p>💦 สแกนเพื่อส่งคำอวยพร 💦</p>
             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://flebkkasstpgm-cmyk.github.io/songkran-static/&bgcolor=ffffff" alt="QR Code สำหรับเข้าหน้าเว็บ">
             <p class="qr-url">flebkkasstpgm-cmyk.github.io</p>
+        </div>
+
+        <!-- ตู้แสดงผลเซียมซีล่าสุด -->
+        <div class="seamsi-cabinet" id="seamsi-cabinet">
+            <div class="cabinet-title">🔮 ผลเซียมซีล่าสุด 🔮</div>
+            <div id="seamsi-display-content">
+                <div class="cabinet-item empty">รอเพื่อนๆ เสี่ยงทาย...</div>
+            </div>
         </div>
     </div>
 
