@@ -431,10 +431,10 @@ input:focus, textarea:focus { border-color: var(--primary-orange); outline: none
     opacity: 1;
     transform: translateY(0);
 }
-.c-num { font-size: 1.1rem; font-weight: 900; color: #d00000; margin-bottom: 5px; display: block; }
-.c-name { font-size: 1.25rem; font-weight: bold; color: #333; margin-bottom: 12px; display: block; border-bottom: 2px dashed #ffb703; padding-bottom: 8px; }
-.c-text { font-size: 1.15rem; line-height: 1.6; color: #023e8a; font-weight: bold; }
-.c-text p { margin-bottom: 4px; }
+.c-num { font-size: 1.3rem; font-weight: 900; color: #d00000; margin-bottom: 8px; display: block; }
+.c-name { font-size: 1.5rem; font-weight: bold; color: #333; margin-bottom: 15px; display: block; border-bottom: 3px dashed #ffb703; padding-bottom: 10px; }
+.c-text { font-size: 1.35rem; line-height: 1.7; color: #023e8a; font-weight: bold; }
+.c-text p { margin-bottom: 5px; }
 
 /* Mobile Responsiveness */
 @media screen and (max-width: 768px) {
