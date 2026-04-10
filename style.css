@@ -13,7 +13,7 @@ body {
     height: 100vh;
 }
 
-/* --- โลโก้บริษัท (Company Brand) --- */
+/* --- โลโก้บริษัท --- */
 .company-brand {
     position: fixed;
     top: 20px;
@@ -30,30 +30,15 @@ body {
     box-shadow: 0 8px 15px rgba(0,0,0,0.05);
 }
 .company-brand img {
-    width: 65px; /* เพิ่มขนาดโลโก้ให้เห็นชัด */
+    width: 65px;
     height: auto;
     object-fit: contain;
-    padding-right: 5px;
 }
-.brand-text {
-    display: flex;
-    flex-direction: column;
-}
-.company-name {
-    font-size: 1.1rem;
-    font-weight: 900;
-    color: #023e8a;
-    line-height: 1.2;
-}
-.company-branch {
-    font-size: 0.75rem;
-    color: #fb8500;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-}
+.brand-text { display: flex; flex-direction: column; }
+.company-name { font-size: 1.1rem; font-weight: 900; color: #023e8a; }
+.company-branch { font-size: 0.75rem; color: #fb8500; font-weight: bold; letter-spacing: 1.5px; }
 
-/* --- พื้นหลังท้องฟ้าและบรรยากาศสงกรานต์ (Background Image) --- */
+/* --- พื้นหลังท้องฟ้า --- */
 .sky-container {
     position: absolute; 
     width: 100%; 
@@ -62,11 +47,6 @@ body {
     background: url('bg.png') no-repeat center center fixed;
     background-size: cover;
 }
-
-/* ซ่อนพระอาทิตย์เดิมเพราะในภาพมีแสงสว่างอยู่แล้ว */
-.sun { display: none; }
-
-/* ปรับก้อนเมฆให้จางลง (Soft Overlay) เพื่อให้เข้ากับลายเส้นการ์ตูน */
 .cloud-group {
     position: absolute; 
     width: 400px; 
@@ -75,306 +55,83 @@ body {
     z-index: 2;
     filter: blur(50px);
     opacity: 0.4;
-    will-change: left;
 }
-.cloud-puff {
-    position: absolute; 
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 50%;
-}
+.cloud-puff { position: absolute; background: rgba(255, 255, 255, 0.9); border-radius: 50%; }
 @keyframes float-clouds { from { left: -500px; } to { left: 110vw; } }
 
 /* --- UI และหัวข้อ --- */
-.ui-layer { 
-    position: relative; 
-    z-index: 50; 
-    text-align: center; 
-    padding-top: 50px; 
-    pointer-events: none; 
-}
-
-@media screen and (max-width: 768px) {
-    .qr-container { display: none; }
-    h1 { font-size: 2.2rem; }
-}
-h1 { 
-    font-size: 3.5rem; 
-    color: var(--primary-orange); 
-    text-shadow: 3px 3px 0 white, 0 5px 20px rgba(0,0,0,0.1); 
-    margin-bottom: 5px;
-}
-.subtitle {
-    font-size: 1.5rem;
-    color: #023e8a;
-    font-weight: bold;
-}
-.controls { 
-    margin-top: 30px; 
-}
+.ui-layer { position: relative; z-index: 50; text-align: center; padding-top: 50px; pointer-events: none; }
+h1 { font-size: 3.5rem; color: var(--primary-orange); text-shadow: 3px 3px 0 white, 0 5px 20px rgba(0,0,0,0.1); }
+.subtitle { font-size: 1.5rem; color: #023e8a; font-weight: bold; }
+.controls { margin-top: 30px; }
 .btn-primary { 
     background: linear-gradient(135deg, var(--primary-orange) 0%, #ffb703 100%); 
-    border: none; 
-    padding: 18px 50px; 
-    font-size: 1.6rem; 
-    color: white; 
-    border-radius: 60px; 
-    cursor: pointer; 
-    font-weight: bold; 
-    box-shadow: 0 12px 30px rgba(251, 133, 0, 0.4); 
-    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-    pointer-events: auto; 
+    border: none; padding: 18px 50px; font-size: 1.6rem; color: white; border-radius: 60px; 
+    cursor: pointer; font-weight: bold; box-shadow: 0 12px 30px rgba(251, 133, 0, 0.4); 
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: auto; 
 }
 .btn-primary:hover { transform: scale(1.1) translateY(-5px); }
 
-/* --- พื้นที่แสดงขันน้ำ --- */
-.main-stage { 
-    position: absolute; 
-    bottom: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 60%; 
-    z-index: 10; 
-}
-.water-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-/* --- วัตถุที่ลอย (ขันน้ำ/ปืน/น้ำอบ - ใช้รูปจริง) --- */
-.item-object { 
-    position: absolute; 
-    width: 150px; /* ปรับขนาดให้เหมาะสมกับรูปภาพ */
-    height: auto; 
-    z-index: 20; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    will-change: transform, left;
-    transform: translateZ(0);
-}
-.item-img {
-    width: 120px;
-    height: auto;
-    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
-    user-select: none;
-    -webkit-user-drag: none;
-}
-
+/* --- พื้นที่แสดงขันน้ำลอย --- */
+.main-stage { position: absolute; bottom: 0; left: 0; width: 100%; height: 60%; z-index: 10; }
+.water-container { position: relative; width: 100%; height: 100%; }
+.item-object { position: absolute; width: 150px; z-index: 20; display: flex; flex-direction: column; align-items: center; will-change: transform, left; }
+.item-img { width: 120px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3)); }
 .b-info { 
-    position: absolute; 
-    top: -85px; 
-    background: white; 
-    padding: 12px 25px; 
-    border-radius: 35px; 
-    font-size: 1.2rem; 
-    font-weight: 800; 
-    color: var(--text-red); 
-    white-space: nowrap; 
-    box-shadow: 0 12px 30px rgba(0,0,0,0.2); 
-    border: 4px solid var(--primary-orange); 
-    z-index: 30; 
+    position: absolute; top: -85px; background: white; padding: 12px 25px; border-radius: 35px; 
+    font-size: 1.2rem; font-weight: 800; color: var(--text-red); white-space: nowrap; 
+    box-shadow: 0 12px 30px rgba(0,0,0,0.2); border: 4px solid var(--primary-orange); z-index: 30; 
 }
 .b-info::after { 
-    content: ''; 
-    position: absolute; 
-    bottom: -18px; 
-    left: 50%; 
-    transform: translateX(-50%); 
-    border-left: 15px solid transparent; 
-    border-right: 15px solid transparent; 
-    border-top: 15px solid var(--primary-orange); 
+    content: ''; position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); 
+    border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 15px solid var(--primary-orange); 
 }
-
-/* ลบ CSS Drawings เดิมออกทั้งหมด */
-.bowl-classic, .thai-pattern, .silver .bowl-classic, .gold .bowl-classic, 
-.gun .bowl-classic, .gun-classic, .gun-body, .gun-tank, .gun-handle, .gun-nozzle,
-.perfume .bowl-classic, .perfume-bottle, .perfume-liquid, .perfume-cap, .perfume-label {
-    display: none !important;
-}
-
-/* ละอองน้ำ Water Streams */
-.water-stream { 
-    position: absolute; 
-    width: 12px; 
-    height: 12px; 
-    background: rgba(173, 232, 244, 0.7); 
-    border-radius: 50%; 
-    pointer-events: none; 
-    z-index: 15; 
-}
-@keyframes water-flow { 
-    0% { transform: translate(0, 0) scale(1); opacity: 1; } 
-    100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; } 
-}
+.water-stream { position: absolute; width: 12px; height: 12px; background: rgba(173, 232, 244, 0.7); border-radius: 50%; z-index: 15; }
+@keyframes water-flow { 0% { transform: translate(0, 0) scale(1); opacity: 1; } 100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; } }
 
 /* --- Modal Styling --- */
-.modal { 
-    display: none; 
-    position: fixed; 
-    z-index: 1000; 
-    left: 0; 
-    top: 0; 
-    width: 100%; 
-    height: 100%; 
-    background: rgba(0,0,0,0.8); 
-    backdrop-filter: blur(15px); 
-}
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(15px); }
 .modal-content { 
-    background: #fffcf2; 
-    margin: 10% auto; 
-    padding: 40px; 
-    width: 90%; 
-    max-width: 500px; 
-    border-radius: 35px; 
-    border: 8px solid var(--primary-orange); 
-    position: relative;
-    animation: modal-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: #fffcf2; margin: 10% auto; padding: 40px; width: 90%; max-width: 550px; border-radius: 35px; 
+    border: 8px solid var(--primary-orange); position: relative; animation: modal-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-@keyframes modal-pop {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-.close-btn { 
-    position: absolute; 
-    right: 25px; 
-    top: 15px; 
-    font-size: 2.5rem; 
-    cursor: pointer; 
-    color: #c1121f; 
-}
+@keyframes modal-pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.close-btn { position: absolute; right: 25px; top: 15px; font-size: 2.5rem; cursor: pointer; color: #c1121f; }
 .form-group { margin-bottom: 20px; }
-
-/* --- Mode Selector --- */
-.mode-selector {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 25px;
-    background: #eee;
-    padding: 5px;
-    border-radius: 15px;
-}
-.mode-btn {
-    flex: 1;
-    border: none;
-    padding: 12px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    font-family: 'Sarabun', sans-serif;
-    transition: 0.3s;
-    background: transparent;
-    color: #666;
-}
-.mode-btn.active {
-    background: white;
-    color: var(--primary-orange);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-.mode-fields {
-    animation: fadeIn 0.3s ease-in-out;
-}
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 1.1rem; }
-input, textarea { 
-    width: 100%; 
-    padding: 15px; 
-    border: 3px solid #dee2e6; 
-    border-radius: 18px; 
-    font-size: 1rem; 
-    transition: 0.2s;
-}
-input:focus, textarea:focus {
-    border-color: var(--primary-orange);
-    outline: none;
-    background: #fffef5;
-}
-
-.item-options { display: flex; gap: 12px; }
-.option { flex: 1; }
+.mode-selector { display: flex; gap: 8px; margin-bottom: 25px; background: #eee; padding: 5px; border-radius: 15px; }
+.mode-btn { flex: 1; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; font-family: 'Sarabun', sans-serif; transition: 0.3s; background: transparent; color: #666; font-size: 0.9rem; }
+.mode-btn.active { background: white; color: var(--primary-orange); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+input, textarea { width: 100%; padding: 15px; border: 3px solid #dee2e6; border-radius: 18px; font-size: 1rem; }
+input:focus, textarea:focus { border-color: var(--primary-orange); outline: none; background: #fffef5; }
+.item-options { display: flex; gap: 10px; flex-wrap: wrap; }
+.option { flex-basis: calc(33.33% - 7px); }
 .option input { display: none; }
-.i-preview { 
-    display: block; 
-    padding: 15px 10px; 
-    text-align: center; 
-    background: white; 
-    border: 3px solid #dee2e6; 
-    border-radius: 15px; 
-    cursor: pointer; 
-    font-weight: bold; 
-    transition: 0.3s;
-}
-.option input:checked + .i-preview { 
-    background: var(--primary-orange); 
-    color: white; 
-    border-color: var(--primary-orange); 
-    box-shadow: 0 5px 15px rgba(251, 133, 0, 0.3);
-}
-
-.btn-submit { 
-    width: 100%; 
-    background: #c1121f; 
-    color: white; 
-    border: none; 
-    padding: 20px; 
-    font-size: 1.5rem; 
-    font-weight: 900; 
-    border-radius: 18px; 
-    cursor: pointer; 
-    margin-top: 10px; 
-    box-shadow: 0 8px 0 #780000;
-}
+.i-preview { display: block; padding: 12px 5px; text-align: center; background: white; border: 3px solid #dee2e6; border-radius: 15px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
+.option input:checked + .i-preview { background: var(--primary-orange); color: white; border-color: var(--primary-orange); }
+.btn-submit { width: 100%; background: #c1121f; color: white; border: none; padding: 20px; font-size: 1.5rem; font-weight: 900; border-radius: 18px; cursor: pointer; box-shadow: 0 8px 0 #780000; }
 .btn-submit:active { transform: translateY(4px); box-shadow: 0 4px 0 #780000; }
 
-/* --- QR Code Container --- */
-.qr-container {
-    position: fixed;
-    top: 30px;
-    right: 30px;
-    z-index: 200;
-}
-.qr-card {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(10px);
-    border: 3px solid white;
-    padding: 15px;
-    border-radius: 25px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    text-align: center;
-    width: 180px;
-    transition: 0.3s;
-}
-.qr-card:hover { transform: translateY(-5px) scale(1.05); }
-.qr-card p {
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: #023e8a;
-    margin-bottom: 10px;
-}
-.qr-card img {
-    width: 100%;
-    border-radius: 15px;
-    margin-bottom: 8px;
-    border: 3px solid #fb8500;
-}
-.qr-url {
-    font-size: 0.7rem !important;
-    opacity: 0.6;
-    margin-bottom: 0 !important;
-}
+/* --- QR Code --- */
+.qr-container { position: fixed; top: 30px; right: 30px; z-index: 200; }
+.qr-card { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border: 3px solid white; padding: 15px; border-radius: 25px; text-align: center; width: 180px; }
+.qr-card img { width: 100%; border-radius: 15px; margin-bottom: 8px; border: 3px solid #fb8500; }
 
-/* --- Live Staff Gallery (Floating Left) --- */
-.staff-gallery {
+/* --- Gallery & Altar Layout (LEFT) --- */
+.gallery-container {
     position: fixed;
     top: 110px;
     left: 20px;
-    width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
     z-index: 100;
 }
+
+.staff-gallery, .monk-altar {
+    width: 280px;
+    overflow: hidden;
+}
+
 .gallery-title {
     background: linear-gradient(to right, #023e8a, #0077b6);
     color: white;
@@ -382,86 +139,139 @@ input:focus, textarea:focus {
     text-align: center;
     border-radius: 20px 20px 0 0;
     font-weight: bold;
-    font-size: 1.1rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    border: 3px solid rgba(255,255,255,0.3);
 }
-#gallery-content {
+
+#gallery-content, .monk-display {
     background: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(12px);
     border: 3px solid rgba(255, 255, 255, 0.5);
     border-top: none;
     border-radius: 0 0 25px 25px;
-    min-height: 350px;
     padding: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
     position: relative;
+}
+
+/* Staff Gallery Items - ปรับให้กึ่งกลางตู้ */
+#gallery-content { 
+    min-height: 320px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    perspective: 1000px;
 }
 .gallery-item {
     position: absolute;
+    left: 50%;
+    top: 50%;
     width: 90%;
+    background: white;
+    padding: 20px 15px;
+    border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
     gap: 12px;
-    background: white;
-    padding: 15px;
-    border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     opacity: 0;
-    transform: translateY(20px) scale(0.9);
+    transform: translate(-50%, -40%) scale(0.9);
     transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 1;
 }
 .gallery-item.active {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translate(-50%, -50%) scale(1);
     z-index: 10;
 }
 .gallery-item.exit {
     opacity: 0;
-    transform: translateY(-20px) scale(0.9);
+    transform: translate(-50%, -60%) scale(0.9);
     z-index: 5;
 }
-.staff-photo {
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 5px solid #fb8500;
+.staff-photo { 
+    width: 130px; 
+    height: 130px; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    border: 5px solid #fb8500; 
     box-shadow: 0 5px 15px rgba(251, 133, 0, 0.3);
 }
-.staff-msg {
-    text-align: center;
+
+/* Monk Altar & Action */
+.monk-display {
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    background: radial-gradient(circle at center, rgba(255,215,0,0.2) 0%, rgba(255,255,255,0.4) 70%);
 }
-.staff-name {
-    display: block;
-    font-size: 1.1rem;
-    font-weight: 800;
-    color: #023e8a;
-    margin-bottom: 5px;
-}
-.staff-text {
-    font-size: 0.95rem;
-    color: #d00000;
-    font-weight: bold;
-    line-height: 1.4;
-    font-style: italic;
-}
-.gallery-item.empty {
-    opacity: 1;
-    position: relative;
-    transform: none;
-    text-align: center;
-    color: #666;
-    background: none;
-    box-shadow: none;
+.monk-img {
+    height: 200px;
+    filter: drop-shadow(0 0 15px rgba(255,215,0,0.4));
+    z-index: 1;
 }
 
-/* --- Media Query สำหรับมือถือ (ซ่อน QR และ Gallery) --- */
+/* Hand Pouring Animation - ขยับเข้าใกล้พระมากขึ้น */
+.hand-container {
+    position: absolute;
+    top: -20px;
+    right: -120px; /* ซ่อนไกลขึ้นหน่อยเพื่อความตื่นเต้น */
+    width: 170px;
+    z-index: 10;
+    opacity: 0;
+    transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.hand-container.active { 
+    right: 5px; /* เลื่อนกลับมาทางขวาเพื่อให้กึ่งกลาง */
+    top: 45px;   /* ปรับระดับความสูงให้พอดีกับไหล่พระ */
+    opacity: 1; 
+}
+.hand-img { 
+    width: 100%; 
+    transform: rotate(-15deg);
+    filter: drop-shadow(-5px 5px 10px rgba(0,0,0,0.3));
+}
+
+/* ป้ายชื่อผู้สรงน้ำ - ทำให้เด่นขึ้น */
+.monk-user-name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    background: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.9), transparent);
+    color: #023e8a;
+    font-weight: 900;
+    font-size: 1.25rem;
+    padding: 8px 0;
+    text-shadow: 0 1px 2px white;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+    z-index: 20;
+    border-bottom: 3px solid #fb8500;
+}
+.monk-user-name.active { 
+    opacity: 1; 
+    transform: translateY(0); 
+}
+
+/* Monk Water Drops */
+.monk-water {
+    position: absolute;
+    background: rgba(179, 229, 252, 0.8);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 5;
+    animation: monk-pour 0.8s ease-out forwards;
+}
+@keyframes monk-pour {
+    0% { transform: translate(0,0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
+}
+
+/* Mobile Responsiveness */
 @media screen and (max-width: 768px) {
-    .qr-container, .staff-gallery { display: none; }
+    .qr-container, .gallery-container { display: none; }
     h1 { font-size: 2.2rem; }
 }
