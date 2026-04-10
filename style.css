@@ -413,7 +413,7 @@ input:focus, textarea:focus { border-color: var(--primary-orange); outline: none
 }
 #seamsi-display-content {
     padding: 15px;
-    min-height: 260px;
+    min-height: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
