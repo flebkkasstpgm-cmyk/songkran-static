@@ -127,9 +127,14 @@ input:focus, textarea:focus { border-color: var(--primary-orange); outline: none
     z-index: 100;
 }
 
-.staff-gallery, .monk-altar {
+.staff-gallery {
     width: 280px;
     overflow: hidden;
+}
+
+.monk-altar {
+    width: 280px;
+    /* overflow: visible by default */
 }
 
 .gallery-title {
@@ -215,15 +220,16 @@ input:focus, textarea:focus { border-color: var(--primary-orange); outline: none
 .hand-container {
     position: absolute;
     top: -20px;
-    right: -120px; /* ซ่อนไกลขึ้นหน่อยเพื่อความตื่นเต้น */
+    right: -130px; /* ขยับออกไปไกลอีกนิดเพื่อความเนียน */
     width: 170px;
-    z-index: 10;
+    z-index: 100; /* ดันขึ้นมาให้อยู่บนสุดในตู้ */
     opacity: 0;
-    transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none; /* ป้องกันการคลิกทับ */
+    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 .hand-container.active { 
-    right: 5px; /* เลื่อนกลับมาทางขวาเพื่อให้กึ่งกลาง */
-    top: 45px;   /* ปรับระดับความสูงให้พอดีกับไหล่พระ */
+    right: 15px; /* ปรับตำแหน่งให้เข้าใกล้กึ่งกลางมากขึ้น */
+    top: 55px;   /* ปรับระดับความสูง */
     opacity: 1; 
 }
 .hand-img { 
