@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const monkActionContainer = document.getElementById('monk-action-container');
 
     // --- Config ---
-    const API_URL = 'https://script.google.com/macros/s/AKfycbxQajKIlHfL2FETjnXhTP761GzYhGtFj3h5LmtfuDwpFo45BcLIVfmRulVWCKRDXdh7/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbw0Pkzre5QDe45LBsUTkegA-nxWZtMYvS5MIeLKD6eE1-4R7eqzCF9wc39tIhpm7vAr/exec';
     
     // --- State ---
     let displayedIds = new Set();
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (Array.isArray(data)) {
                 allPhotoBlessings = data.filter(d => d.mode === 'photo');
-                const monkData = data.filter(d => d.mode === 'monk');
+                const monkData = data.filter(d => d.mode === 'monk' || d.type === 'monk');
                 
                 if (monkData.length > 0) {
                     allMonkBlessings = monkData;
@@ -150,7 +150,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!isMonkAnimating) updateMonkLoop();
                 }
 
-                data.filter(d => d.mode === 'item' || !d.mode).forEach(item => {
+                // กรองเฉพาะที่เป็น item จริงๆ เท่านั้น (ห้ามเอา monk หรือ photo มาวิ่งข้างล่าง)
+                data.filter(d => (d.mode === 'item' || !d.mode) && d.type !== 'monk' && d.type !== 'photo').forEach(item => {
                     const id = `${item.name}-${item.time}`;
                     if (!displayedIds.has(id)) {
                         createFloatingItem(item.name, item.bless, item.type || 'silver');
